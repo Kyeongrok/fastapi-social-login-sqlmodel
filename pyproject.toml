@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "fastapi-social-login3"
+version = "0.1.0"
+description = ""
+authors = ["kyeongrok.kim <kyeongrok.kim@e3view.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.110.0"
+uvicorn = "^0.28.0"
+fastapi-users = "^13.0.0"
+sqlmodel = "^0.0.16"
+fastapi-users-db-sqlmodel = "^0.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
