@@ -12,6 +12,9 @@ uvicorn = "^0.28.0"
 fastapi-users = "^13.0.0"
 sqlmodel = "^0.0.16"
 fastapi-users-db-sqlmodel = "^0.3.0"
+psycopg2 = "^2.9.9"
+pydantic-settings = "^2.2.1"
+uuid7 = "^0.1.0"
 
 
 [build-system]

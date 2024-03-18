@@ -2,8 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlmodel import SQLModel, Field
-
-from app.utils.uuid6 import uuid7
+from uuid_extensions import uuid7
 
 
 class BaseUUIDModel(SQLModel):

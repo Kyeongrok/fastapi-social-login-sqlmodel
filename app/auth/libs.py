@@ -40,13 +40,13 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
             f"Verification requested for user {user.id}. Verification token: {token}")
 
 
+async def get_user_manager(user_db: SQLModelUserDatabase = Depends(get_user_db)):
+    yield UserManager(user_db)
+
+
 def get_jwt_strategy() -> JWTStrategy:
     return JWTStrategy(secret=settings.SECRET_KEY,
                        lifetime_seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60)
-
-
-async def get_user_manager(user_db: SQLModelUserDatabase = Depends(get_user_db)):
-    yield UserManager(user_db)
 
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
