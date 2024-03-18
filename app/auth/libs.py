@@ -7,6 +7,7 @@ from fastapi_users.authentication import (AuthenticationBackend,
                                           BearerTransport, JWTStrategy)
 from fastapi_users.schemas import BaseOAuthAccount
 from fastapi_users_db_sqlmodel import SQLModelUserDatabase, SQLModelBaseUserDB
+from sqlmodel.ext.asyncio.session import AsyncSession
 from starlette.requests import Request
 
 from app.core.config import settings
@@ -17,8 +18,15 @@ class OAuthAccount(BaseOAuthAccount):
     pass
 
 
-async def get_user_db():
-    yield SQLModelBaseUserDB(User, OAuthAccount)
+# todo https://sqlmodel.tiangolo.com/ 참고
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
+        yield session
+
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLModelUserDatabase(User)
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
