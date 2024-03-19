@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, AsyncGenerator
 from uuid import UUID
 
 from fastapi import Depends
@@ -7,12 +7,14 @@ from fastapi_users.authentication import (AuthenticationBackend,
                                           BearerTransport, JWTStrategy)
 from fastapi_users.schemas import BaseOAuthAccount
 from fastapi_users_db_sqlmodel import SQLModelUserDatabase, SQLModelBaseUserDB
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 from starlette.requests import Request
 
 from app.core.config import settings
 from app.models.user_model import User
 
+engine = create_async_engine(str(settings.ASYNC_DATABASE_URI))
 
 class OAuthAccount(BaseOAuthAccount):
     pass
@@ -21,12 +23,12 @@ class OAuthAccount(BaseOAuthAccount):
 # todo https://sqlmodel.tiangolo.com/ 참고
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
+    async with AsyncSession(engine) as session:
         yield session
 
 
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
-    yield SQLModelUserDatabase(User)
+    yield SQLModelUserDatabase(session, User)
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, UUID]):
