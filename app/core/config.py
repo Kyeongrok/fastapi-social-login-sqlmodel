@@ -21,7 +21,7 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             if v == "":
                 return PostgresDsn.build(
-                    scheme="postgresql+psycopg2",
+                    scheme="postgresql+asyncpg",
                     username=info.data["DB_USERNAME"],
                     password=info.data["DB_PASSWORD"],
                     host=info.data["DB_HOST"],
